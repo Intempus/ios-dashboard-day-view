@@ -156,7 +156,7 @@ public final class AllDayView: UIView {
             verticalStackView.addArrangedSubview(eventView)
         }
 
-        // add vert. stack view inside, pin vert. stack view, update content view by the number of horz. stack views
+        // add vert. stack view inside, pin vert. stack view
         verticalStackView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(verticalStackView)
         
