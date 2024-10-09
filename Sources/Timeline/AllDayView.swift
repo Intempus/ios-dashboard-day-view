@@ -153,6 +153,7 @@ public final class AllDayView: UIView {
             eventView.layer.cornerRadius = 6.0
             eventView.layer.masksToBounds = true
             
+            // Add the event view to the vertical stack
             verticalStackView.addArrangedSubview(eventView)
         }
 
@@ -160,8 +161,10 @@ public final class AllDayView: UIView {
         verticalStackView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(verticalStackView)
         
+        // Enable margins for better spacing within the vertical stack view
         verticalStackView.isLayoutMarginsRelativeArrangement = true
         verticalStackView.layoutMargins = UIEdgeInsets(top:10, left: 0, bottom: 0, right: 10)
+        
         verticalStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 0).isActive = true
         verticalStackView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0).isActive = true
         verticalStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 0).isActive = true
