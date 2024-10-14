@@ -8,6 +8,12 @@ open class EventView: UIView {
         textView.frame.height
     }
     
+    public private(set) lazy var topRightLabel: UILabel = {
+            let label = UILabel()
+            label.textAlignment = .right
+            return label
+        }()
+    
     public private(set) lazy var textView: UITextView = {
         let view = UITextView()
         view.isUserInteractionEnabled = false
@@ -35,6 +41,7 @@ open class EventView: UIView {
         clipsToBounds = false
         color = tintColor
         addSubview(textView)
+        addSubview(topRightLabel)
         layer.cornerRadius = 6
         layer.masksToBounds = true
         for (idx, handle) in eventResizeHandles.enumerated() {
@@ -55,6 +62,11 @@ open class EventView: UIView {
         if let lineBreakMode = event.lineBreakMode {
             textView.textContainer.lineBreakMode = lineBreakMode
         }
+        
+        if let rightLabelText = event.topRightLabel {
+            topRightLabel.attributedText = rightLabelText
+        }
+        
         descriptor = event
         backgroundColor = .clear
         layer.backgroundColor = event.backgroundColor.cgColor
@@ -134,6 +146,9 @@ open class EventView: UIView {
                 return CGRect(x: bounds.minX + 8, y: bounds.minY, width: bounds.width - 6, height: bounds.height)
             }
         }()
+        
+        topRightLabel.frame = CGRect(x: bounds.maxX - 100, y: bounds.minY + 5, width: 90, height: 20) 
+
         if frame.minY < 0 {
             var textFrame = textView.frame;
             textFrame.origin.y = frame.minY * -1;
