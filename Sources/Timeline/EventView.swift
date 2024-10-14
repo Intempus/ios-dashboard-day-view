@@ -147,7 +147,15 @@ open class EventView: UIView {
             }
         }()
         
-        topRightLabel.frame = CGRect(x: bounds.maxX - 100, y: bounds.minY + 5, width: 90, height: 20) 
+        let rightLabelPadding: CGFloat = 10
+        let rightLabelWidth: CGFloat = 90
+        let rightLabelHeight: CGFloat = 20
+        let rightLabelYPositionOffset: CGFloat = 5
+        
+        topRightLabel.frame = CGRect(x: bounds.maxX - rightLabelWidth - rightLabelPadding,
+                                     y: bounds.minY + rightLabelYPositionOffset,
+                                     width: rightLabelWidth,
+                                     height: rightLabelHeight)
 
         if frame.minY < 0 {
             var textFrame = textView.frame;
