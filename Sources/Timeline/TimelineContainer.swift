@@ -3,9 +3,13 @@ import UIKit
 public final class TimelineContainer: UIScrollView {
     public let timeline: TimelineView
     
+    public var onRefresh: (() -> Void)?
+
     public init(_ timeline: TimelineView) {
         self.timeline = timeline
         super.init(frame: .zero)
+        
+        setupRefreshControl()
     }
     
     @available(*, unavailable)
@@ -24,6 +28,17 @@ public final class TimelineContainer: UIScrollView {
         let bottomSafeInset = Double(window?.safeAreaInsets.bottom ?? 0.0)
         scrollIndicatorInsets = UIEdgeInsets(top: allDayViewHeight, left: 0, bottom: bottomSafeInset, right: 0)
         contentInset = UIEdgeInsets(top: allDayViewHeight, left: 0, bottom: bottomSafeInset, right: 0)
+    }
+    
+    private func setupRefreshControl() {
+        let control = UIRefreshControl()
+        control.addTarget(self, action: #selector(refreshTimeline), for: .valueChanged)   
+        self.refreshControl = control
+    }
+    
+    @objc private func refreshTimeline() {
+        onRefresh?()
+        refreshControl?.endRefreshing()
     }
     
     public func prepareForReuse() {

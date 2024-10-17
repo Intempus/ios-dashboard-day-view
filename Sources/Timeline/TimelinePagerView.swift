@@ -102,12 +102,16 @@ public final class TimelinePagerView: UIView, UIGestureRecognizerDelegate, UIScr
         addGestureRecognizer(panGestureRecognizer)
         panGestureRecognizer.delegate = self
     }
-
-    public func updateStyle(_ newStyle: TimelineStyle) {
+    
+    public func updateStyle(_ newStyle: TimelineStyle, onRefresh: (() -> Void)? = nil) {
         style = newStyle
         pagingViewController.viewControllers?.forEach({ (timelineContainer) in
             if let controller = timelineContainer as? TimelineContainerController {
                 self.updateStyleOfTimelineContainer(controller: controller)
+                // Calling refresh from here because we already have access to this function from DayView.
+                if let refreshTimeline = onRefresh {
+                    controller.container.onRefresh = refreshTimeline
+                }
             }
         })
         pagingViewController.view.backgroundColor = style.backgroundColor
