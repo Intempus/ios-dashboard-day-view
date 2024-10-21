@@ -151,11 +151,18 @@ open class EventView: UIView {
         let rightLabelWidth: CGFloat = 90
         let rightLabelHeight: CGFloat = 20
         let rightLabelYPositionOffset: CGFloat = 5
+        let eventWidth = superview?.bounds.width ?? 410
+        let smallerEventWidth = eventWidth/2
         
-        topRightLabel.frame = CGRect(x: bounds.maxX - rightLabelWidth - rightLabelPadding,
-                                     y: bounds.minY + rightLabelYPositionOffset,
-                                     width: rightLabelWidth,
-                                     height: rightLabelHeight)
+        if bounds.width >= smallerEventWidth {
+            topRightLabel.isHidden = false
+            topRightLabel.frame = CGRect(x: bounds.maxX - rightLabelWidth - rightLabelPadding,
+                                         y: bounds.minY + rightLabelYPositionOffset,
+                                         width: rightLabelWidth,
+                                         height: rightLabelHeight)
+        } else {
+            topRightLabel.isHidden = true
+        }
 
         if frame.minY < 0 {
             var textFrame = textView.frame;
