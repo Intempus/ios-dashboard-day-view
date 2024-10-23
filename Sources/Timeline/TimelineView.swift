@@ -38,6 +38,17 @@ public final class TimelineView: UIView {
                 if eventDescriptor.isAllDay {
                     allDayLayoutAttributes.append(anEventLayoutAttribute)
                 } else {
+                    // This change ensures that events shorter than 20 minutes are displayed with a minimum duration of 20 minutes(so even if the event has actual duration of 5 minutes it will be set to 20).
+                    // In the current event layout system, very short events (less than 20 minutes) are visually difficult to interact with and can cause layout issues, such as overlapping or appearing too small in the timeline view.
+                    // By extending the duration of such short events to 20 minutes, we provide a more usable visual representation and prevent UI bugs where these events might be misaligned or invisible due to their small height.
+                    // This change is made within the layoutAttributes setter to intercept and adjust the duration before the events are laid out.
+                    let eventDuration = eventDescriptor.dateInterval.end.timeIntervalSince(eventDescriptor.dateInterval.start) / 60.0
+                    let minimumEventDurationInMinutes: TimeInterval = 20
+                    if eventDuration < minimumEventDurationInMinutes {
+                        let newEndDate = calendar.date(byAdding: .minute, value: Int(minimumEventDurationInMinutes), to: eventDescriptor.dateInterval.start)
+                        anEventLayoutAttribute.descriptor.dateInterval = DateInterval(start: eventDescriptor.dateInterval.start, end: newEndDate!)
+                    }
+                    
                     regularLayoutAttributes.append(anEventLayoutAttribute)
                 }
             }
